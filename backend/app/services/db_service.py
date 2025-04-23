@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import update
+from sqlalchemy.orm import selectinload
 from typing import List, Optional, Dict, Any
 from uuid import UUID
 
@@ -88,7 +89,7 @@ async def get_chart_with_extracted_data(db: AsyncSession, chart_id: str) -> Opti
     stmt = (
         select(Chart)
         .where(Chart.id == chart_id)
-        .options(sqlalchemy.orm.selectinload(Chart.extracted_data))
+        .options(selectinload(Chart.extracted_data))
     )
     
     result = await db.execute(stmt)
